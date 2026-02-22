@@ -8,10 +8,20 @@ import java.sql.ResultSet;
 
 public class DBConnection {
 
-    private static final String URL = "jdbc:mysql://trolley.proxy.rlwy.net:53635/railway?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-    private static final String USER = "root";
-    private static final String PASS = "dvMMDdeTYbZoveQiEwBnbiSjdtRRSXSV";
+//    private static final String URL = "jdbc:mysql://trolley.proxy.rlwy.net:53635/railway?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+//    private static final String USER = "root";
+//    private static final String PASS = "dvMMDdeTYbZoveQiEwBnbiSjdtRRSXSV";
 
+	private static final String HOST = System.getenv("MYSQLHOST");
+	private static final String PORT = System.getenv("MYSQLPORT");
+	private static final String DATABASE = System.getenv("MYSQLDATABASE");
+	private static final String USER = System.getenv("MYSQLUSER");
+	private static final String PASS = System.getenv("MYSQLPASSWORD");
+
+	private static final String URL =
+	        "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE +
+	        "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+	
     // Get MySQL connection
     public static Connection getConnection() {
         try {
