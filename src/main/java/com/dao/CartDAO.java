@@ -12,13 +12,11 @@ public class CartDAO {
     // Fetch cart products
     public List<Product> getCartProducts(int userId) {
         List<Product> list = new ArrayList<>();
-        String sql = """
-            SELECT c.id AS cart_id, c.quantity, 
-                   p.id AS product_id, p.name, p.price, p.image1 
-            FROM cart c 
-            JOIN products p ON c.product_id = p.id
-            WHERE c.user_id = ?
-        """;
+        String sql = "SELECT c.id AS cart_id, c.quantity, \r\n"
+        		+ "                   p.id AS product_id, p.name, p.price, p.image1 \r\n"
+        		+ "            FROM cart c \r\n"
+        		+ "            JOIN products p ON c.product_id = p.id\r\n"
+        		+ "            WHERE c.user_id = ?";
 
         try(Connection con = DBConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {

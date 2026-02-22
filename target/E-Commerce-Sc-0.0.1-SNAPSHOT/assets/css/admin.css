@@ -1,0 +1,77 @@
+/* =================== General =================== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* =================== Header =================== */
+.header {
+    height: 60px;
+    background: #0d6efd;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    font-weight: 600;
+    font-size: 18px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* =================== Sidebar =================== */
+.sidebar {
+    width: 260px;
+    background: #1e1e2f;
+    color: #fff;
+    position: fixed;
+    top: 60px; /* below header */
+    left: 0;
+    height: 100%;
+    overflow-y: auto;
+    transition: 0.4s;
+}
+
+.sidebar a {
+    display: block;
+    color: #ddd;
+    padding: 12px 20px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.sidebar a:hover, .sidebar a.active {
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 8px;
+}
+
+.sidebar-title {
+    color: #00d4ff;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 15px 0 8px 20px;
+    letter-spacing: 0.5px;
+}
+
+/* =================== Dashboard Content =================== */
+#content-area {
+    margin-left: 260px;
+    padding: 25px;
+    transition: 0.4s;
+}
+
+/* Cards Grid */
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+/* Cards */
+.dashboard-card {
+    }

@@ -13,12 +13,11 @@ public class OrderDAO {
 
     public List<Order> getAllOrders() {
         List<Order> list = new ArrayList<>();
-        String sql = """
-            SELECT o.id, u.name AS user_name, o.total_amount, o.status, o.order_date,
-            (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) AS item_count
-            FROM orders o JOIN users u ON o.user_id = u.id
-            ORDER BY o.id DESC
-        """;
+        String sql = "SELECT c.id AS cart_id, c.quantity, \r\n"
+        		+ "                   p.id AS product_id, p.name, p.price, p.image1 \r\n"
+        		+ "            FROM cart c \r\n"
+        		+ "            JOIN products p ON c.product_id = p.id\r\n"
+        		+ "            WHERE c.user_id = ?";
 
         try(Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
