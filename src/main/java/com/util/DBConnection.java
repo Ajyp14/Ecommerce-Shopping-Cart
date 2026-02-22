@@ -1,0 +1,132 @@
+
+package com.util;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+public class DBConnection {
+
+    private static final String URL = "jdbc:mysql://localhost:3306/onlineshopping";
+    private static final String USER = "root";
+    private static final String PASS = "ajy8805";
+
+    // Get MySQL connection
+    public static Connection getConnection() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            return DriverManager.getConnection(URL, USER, PASS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // ------------------------------
+    // CARD PAYMENT METHODS
+    // ------------------------------
+
+    // Validate card details
+    public boolean validateCard(String cardNumber, String holderName,
+                                String expMonth, String expYear, String cvv) {
+
+        try (Connection con = getConnection()) {
+            PreparedStatement pst = con.prepareStatement(
+                "SELECT * FROM card_details WHERE card_number=? AND holder_name=? AND exp_month=? AND exp_year=? AND cvv=?"
+            );
+
+            pst.setString(1, cardNumber);
+            pst.setString(2, holderName);
+            pst.setString(3, expMonth);
+            pst.setString(4, expYear);
+            pst.setString(5, cvv);
+
+            ResultSet rs = pst.executeQuery();
+            return rs.next(); // TRUE if card exists
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    // Get card balance
+    public int getCardBalance(String cardNumber) {
+        try (Connection con = getConnection()) {
+            PreparedStatement pst = con.prepareStatement(
+                "SELECT balance FROM card_details WHERE card_number=?"
+            );
+            pst.setString(1, cardNumber);
+
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("balance");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1; // card not found
+    }
+
+
+    // Update card balance
+    public void updateCardBalance(String cardNumber, int newBalance) {
+        try (Connection con = getConnection()) {
+            PreparedStatement pst = con.prepareStatement(
+                "UPDATE card_details SET balance=? WHERE card_number=?"
+            );
+
+            pst.setInt(1, newBalance);
+            pst.setString(2, cardNumber);
+            pst.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // ------------------------------
+    // 🟢 UPI PAYMENT METHODS
+    // ------------------------------
+
+    // Check UPI balance
+    public int checkUPIBalance(String upiId) {
+        try (Connection con = getConnection()) {
+            PreparedStatement pst = con.prepareStatement(
+                "SELECT balance FROM bank_upi WHERE upi_id=?"
+            );
+
+            pst.setString(1, upiId);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("balance");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1; // not found
+    }
+
+
+    // Deduct UPI balance
+    public void updateUPIBalance(String upiId, int newBalance) {
+        try (Connection con = getConnection()) {
+            PreparedStatement pst = con.prepareStatement(
+                "UPDATE bank_upi SET balance=? WHERE upi_id=?"
+            );
+
+            pst.setInt(1, newBalance);
+            pst.setString(2, upiId);
+            pst.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
