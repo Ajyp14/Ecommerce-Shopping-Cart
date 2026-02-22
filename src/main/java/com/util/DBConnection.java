@@ -8,9 +8,9 @@ import java.sql.ResultSet;
 
 public class DBConnection {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/onlineshopping";
+    private static final String URL = "jdbc:mysql://trolley.proxy.rlwy.net:53635/railway?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     private static final String USER = "root";
-    private static final String PASS = "ajy8805";
+    private static final String PASS = "dvMMDdeTYbZoveQiEwBnbiSjdtRRSXSV";
 
     // Get MySQL connection
     public static Connection getConnection() {
