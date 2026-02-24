@@ -30,6 +30,10 @@ public class DBConnection {
             Class.forName("com.mysql.cj.jdbc.Driver");
             
             System.out.println("posrt1;;"+PORT);
+            System.out.println("HOST: " + HOST);
+            System.out.println("PORT: " + PORT);
+            System.out.println("DB: " + DATABASE);
+            System.out.println("USER: " + USER);
             
             return DriverManager.getConnection(URL, USER, PASS);
         } catch (Exception e) {
