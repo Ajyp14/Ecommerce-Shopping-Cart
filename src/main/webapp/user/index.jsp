@@ -1,9 +1,14 @@
+<%@page import="com.util.DBConnection"%>
+<%@page import="java.sql.Connection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="include/header.jsp" %>
 <%@ page import="com.dao.ProductDAO, com.model.Product, java.util.*" %>
 
 <%
+Connection con = DBConnection.getConnection();
+System.out.println("Connection object: " + con); 
+
     // Get selected category from request parameter
     String selectedCategory = request.getParameter("category");
 

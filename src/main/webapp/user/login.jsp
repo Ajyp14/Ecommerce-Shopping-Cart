@@ -1,7 +1,12 @@
+<%@page import="com.util.DBConnection"%>
+<%@page import="java.sql.Connection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
 <%@ include file="include/header.jsp" %>
+
+<% Connection con = DBConnection.getConnection();
+System.out.println("Connection object: " + con); %>
 
 <style>
 .login-container {

@@ -2,10 +2,13 @@
 package com.controller;
 
 import java.io.IOException;
+import java.sql.Connection;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import com.model.Admin;
+import com.util.DBConnection;
 
 @WebServlet("/AdminLoginServlet")
 public class AdminLoginServlet extends HttpServlet {
@@ -19,6 +22,9 @@ public class AdminLoginServlet extends HttpServlet {
 
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+        
+        Connection con = DBConnection.getConnection();
+        System.out.println("Connection object: " + con);
 
         if (ADMIN_USERNAME.equals(username) && ADMIN_PASSWORD.equals(password)) 
         {
