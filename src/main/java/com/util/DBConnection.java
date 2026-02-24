@@ -18,6 +18,8 @@ public class DBConnection {
 	private static final String USER = System.getenv("MYSQLUSER");
 	private static final String PASS = System.getenv("MYSQLPASSWORD");
 
+	
+	
 	private static final String URL =
 	        "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE +
 	        "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
@@ -26,6 +28,9 @@ public class DBConnection {
     public static Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            System.out.println("posrt1;;"+PORT);
+            
             return DriverManager.getConnection(URL, USER, PASS);
         } catch (Exception e) {
             e.printStackTrace();
