@@ -16,7 +16,10 @@ RUN mkdir -p /app/data/product-images && \
 ENV PRODUCT_IMAGES_PATH=/app/data/product-images
 
 # Expose port 8080
+#ENV PORT 8080
 EXPOSE 8080
 
+CMD sed -i "s/port=\"8080\"/port=\"${PORT}\"/" /usr/local/tomcat/conf/server.xml && catalina.sh run
+
 # Start Tomcat
-CMD ["catalina.sh", "run"]
+#CMD ["catalina.sh", "run"]
