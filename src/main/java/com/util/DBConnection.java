@@ -26,6 +26,8 @@ public class DBConnection {
 	        "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 */
 	
+		private static final String DATABASE_URL = System.getenv("DATABASE_URL");
+
 
 	    private static final String HOST = System.getenv("DB_HOST");
 	    private static final String PORT = System.getenv("DB_PORT");
@@ -40,6 +42,12 @@ public class DBConnection {
 	        try {
 	            Class.forName("org.postgresql.Driver");
 
+	            // Try DATABASE_URL first (Render's preferred method)
+	            if (DATABASE_URL != null && !DATABASE_URL.isEmpty()) {
+	                System.out.println("✅ Using DATABASE_URL");
+	                return DriverManager.getConnection(DATABASE_URL);
+	            }
+	            
 	            System.out.println("HOST: " + HOST);
 	            System.out.println("PORT: " + PORT);
 	            System.out.println("DB: " + DATABASE);
