@@ -12,7 +12,8 @@ public class DBConnection {
 //    private static final String USER = "root";
 //    private static final String PASS = "dvMMDdeTYbZoveQiEwBnbiSjdtRRSXSV";
 
-	private static final String HOST = System.getenv("MYSQLHOST");
+//Mysql
+/*	private static final String HOST = System.getenv("MYSQLHOST");
 	private static final String PORT = System.getenv("MYSQLPORT");
 	private static final String DATABASE = System.getenv("MYSQLDATABASE");
 	private static final String USER = System.getenv("MYSQLUSER");
@@ -23,9 +24,40 @@ public class DBConnection {
 	private static final String URL =
 	        "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE +
 	        "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+*/
+	
+
+	    private static final String HOST = System.getenv("DB_HOST");
+	    private static final String PORT = System.getenv("DB_PORT");
+	    private static final String DATABASE = System.getenv("DB_NAME");
+	    private static final String USER = System.getenv("DB_USER");
+	    private static final String PASS = System.getenv("DB_PASS");
+
+	    private static final String URL =
+	            "jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASE + "?sslmode=require";
+
+	    public static Connection getConnection() {
+	        try {
+	            Class.forName("org.postgresql.Driver");
+
+	            System.out.println("HOST: " + HOST);
+	            System.out.println("PORT: " + PORT);
+	            System.out.println("DB: " + DATABASE);
+	            System.out.println("USER: " + USER);
+
+	            return DriverManager.getConnection(URL, USER, PASS);
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        return null;
+	    }
+	
+	
+
 	
     // Get MySQL connection
-    public static Connection getConnection() {
+/*    public static Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             
@@ -41,8 +73,10 @@ public class DBConnection {
         }
         return null;
     }
-
-    // ------------------------------
+ */   
+    
+	
+   // ------------------------------
     // CARD PAYMENT METHODS
     // ------------------------------
 
