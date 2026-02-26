@@ -36,7 +36,7 @@ public class DBConnection {
 	    private static final String PASS = System.getenv("DB_PASS");
 
 	    private static final String URL =
-	            "jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASE + "?sslmode=require";
+	            "jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASE ;
 
 	    public static Connection getConnection() {
 	        try {
