@@ -1,6 +1,7 @@
 
 package com.util;
 
+import java.net.URI;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -35,8 +36,7 @@ public class DBConnection {
 	    private static final String USER = System.getenv("DB_USER");
 	    private static final String PASS = System.getenv("DB_PASS");
 
-	    private static final String URL =
-	            "jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASE + "?sslmode=require";
+	    private static final String URL="jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASE + "?sslmode=require";
 
 	    public static Connection getConnection() {
 	        try {
@@ -46,7 +46,20 @@ public class DBConnection {
 	            // Try DATABASE_URL first (Render's preferred method)
 	            if (DATABASE_URL != null && !DATABASE_URL.isEmpty()) {
 	                System.out.println("✅ Using DATABASE_URL");
-	                return DriverManager.getConnection(DATABASE_URL);
+	                
+	                URI uri = new URI(DATABASE_URL);
+
+	                String username = uri.getUserInfo().split(":")[0];
+	                String password = uri.getUserInfo().split(":")[1];
+
+	                String jdbcUrl = "jdbc:postgresql://" 
+	                        + uri.getHost() + ":" 
+	                        + uri.getPort() 
+	                        + uri.getPath()
+	                        + "?sslmode=require";
+
+	                return DriverManager.getConnection(jdbcUrl, username, password);
+	                
 	            }
 	            
 	            System.out.println("HOST: " + HOST);
