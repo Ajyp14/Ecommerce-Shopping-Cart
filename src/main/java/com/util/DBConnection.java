@@ -46,20 +46,22 @@ public class DBConnection {
 	            // Try DATABASE_URL first (Render's preferred method)
 	            if (DATABASE_URL != null && !DATABASE_URL.isEmpty()) {
 	                System.out.println("✅ Using DATABASE_URL");
-	                
+
 	                URI uri = new URI(DATABASE_URL);
 
-	                String username = uri.getUserInfo().split(":")[0];
-	                String password = uri.getUserInfo().split(":")[1];
+	                String[] userInfo = uri.getUserInfo().split(":");
+	                String username = userInfo[0];
+	                String password = userInfo[1];
 
-	                String jdbcUrl = "jdbc:postgresql://" 
-	                        + uri.getHost() + ":" 
-	                        + uri.getPort() 
+	                int port = uri.getPort() == -1 ? 5432 : uri.getPort();
+
+	                String jdbcUrl = "jdbc:postgresql://"
+	                        + uri.getHost() + ":"
+	                        + port
 	                        + uri.getPath()
 	                        + "?sslmode=require";
 
 	                return DriverManager.getConnection(jdbcUrl, username, password);
-	                
 	            }
 	            
 	            System.out.println("HOST: " + HOST);
