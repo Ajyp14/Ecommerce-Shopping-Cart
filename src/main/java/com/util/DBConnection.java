@@ -36,10 +36,11 @@ public class DBConnection {
 	    private static final String PASS = System.getenv("DB_PASS");
 
 	    private static final String URL =
-	            "jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASE ;
+	            "jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASE + "?sslmode=require";
 
 	    public static Connection getConnection() {
 	        try {
+	        	System.out.println("Hey ajay");
 	            Class.forName("org.postgresql.Driver");
 
 	            // Try DATABASE_URL first (Render's preferred method)
