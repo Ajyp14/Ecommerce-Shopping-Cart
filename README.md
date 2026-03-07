@@ -31,7 +31,7 @@ The application follows **MVC Architecture**, uses **Docker for containerization
 - Remove Cart Items
 - Place Orders
 - View Order History
-
+---
 ## Admin Features
 - Admin Login
 - Add New Products
@@ -40,10 +40,10 @@ The application follows **MVC Architecture**, uses **Docker for containerization
 - View Orders
 - Cancel Orders
 - Order Statistics Dashboard
-
+---
 ##Admin credentials 
--Username = admin ,
--password = admin123
+- Username = admin ,
+- password = admin123
 ---
 
 # 🏗️ Project Architecture
