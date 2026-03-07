@@ -40,7 +40,8 @@
 
     <div class="mb-3">
         <label class="form-label fw-bold">Password</label>
-        <input type="password" name="password" required class="form-control">
+        <input type="password" name="password" pattern="(?=.*[A-Z])(?=.*[0-9]).{8,}"
+       title="Password must be at least 8 characters with 1 uppercase letter and 1 number" required class="form-control">
     </div>
 
     <div class="mb-3">
