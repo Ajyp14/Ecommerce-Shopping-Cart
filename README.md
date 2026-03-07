@@ -42,8 +42,8 @@ The application follows **MVC Architecture**, uses **Docker for containerization
 - Order Statistics Dashboard
 
 ##Admin credentials 
-Username = admin
-password = admin123
+-Username = admin ,
+-password = admin123
 ---
 
 # 🏗️ Project Architecture
