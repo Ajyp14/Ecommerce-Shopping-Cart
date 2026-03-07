@@ -79,7 +79,7 @@
             <img id="mainImg"
                  src="<%=request.getContextPath()%>/product-images/<%=p.getImage1()%>"
                  class="img-fluid rounded shadow-sm mb-2"
-                 style="height:400px; width:100%; object-fit:contain;"">
+                 style="height:400px; width:100%; object-fit:contain;">
    			
    			 <!-- THUMBNAILS -->
             <div class="d-flex justify-content-center gap-2 mt-2">

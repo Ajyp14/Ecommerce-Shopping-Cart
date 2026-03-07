@@ -75,7 +75,7 @@ System.out.println("Connection object: " + con);
                         <p class="fw-bold text-danger fs-5">₹ <%=p.getPrice()%></p>
 		
                         <!-- Buy Now Button -->
-                 <%-- /user --%>       <a href="${pageContext.request.contextPath}/user/product-detail.jsp?id=<%=p.getId()%>"
+                 <%-- /user --%>       <a href="product-detail.jsp?id=<%=p.getId()%>"
                            class="btn btn-primary w-100 btn-sm mb-2">
                             Buy Now
                         </a>
