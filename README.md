@@ -10,13 +10,13 @@ The application follows **MVC Architecture**, uses **Docker for containerization
 
 # 🚀 Live Demo
 
-👉 https://YOUR-RENDER-LINK.onrender.com
+👉 [https://ecommerce-shopping-cart-tkch.onrender.com]
 
 ---
 
 # 📂 GitHub Repository
 
-👉 https://github.com/Ajyp14/E-Commerce-Sc
+👉 https://github.com/Ajyp14/Ecommerce-Shopping-Cart.git
 
 ---
 
