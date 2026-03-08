@@ -19,8 +19,8 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 COPY --from=build /app/target/E-Commerce-Sc-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
 
 # Image folder
-RUN mkdir -p /app/data/product-images && chmod 777 /app/data/product-images
-ENV PRODUCT_IMAGES_PATH=/app/data/product-images
+#RUN mkdir -p /app/data/product-images && chmod 777 /app/data/product-images
+#ENV PRODUCT_IMAGES_PATH=/app/data/product-images
 
 EXPOSE 10000
 
