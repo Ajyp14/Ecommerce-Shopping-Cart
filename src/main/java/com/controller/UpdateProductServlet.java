@@ -16,7 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 @WebServlet("/UpdateProductServlet")
-@MultipartConfig
+@MultipartConfig(maxFileSize = 1024 * 1024 * 5)
 public class UpdateProductServlet extends HttpServlet {
 
     @Override
@@ -89,8 +89,11 @@ public class UpdateProductServlet extends HttpServlet {
 
                 Cloudinary cloudinary = CloudinaryConfig.getCloudinary();
 
+                // convert uploaded file to byte[]
+                byte[] fileBytes = part.getInputStream().readAllBytes();
+
                 Map uploadResult = cloudinary.uploader().upload(
-                        part.getInputStream(),
+                        fileBytes,
                         ObjectUtils.emptyMap()
                 );
 
@@ -101,6 +104,7 @@ public class UpdateProductServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+        // if no new image uploaded → keep old image
         return oldImage;
     }
 }

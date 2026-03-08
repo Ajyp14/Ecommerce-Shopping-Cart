@@ -135,24 +135,27 @@ public class AddProductServlet extends HttpServlet {
     }
 
     // ---------- IMAGE SAVE HELPER ----------
-    private String saveImage(Part filePart) throws IOException {
+    private String saveImage(Part part) {
 
-        if (filePart != null && filePart.getSize() > 0) {
+    	try {
 
-            Cloudinary cloudinary = CloudinaryConfig.getCloudinary();
+            if (part != null && part.getSize() > 0) {
 
-            Map uploadResult = cloudinary.uploader().upload(
-                    filePart.getInputStream(),
-                    ObjectUtils.emptyMap()
-            );
+                Cloudinary cloudinary = CloudinaryConfig.getCloudinary();
 
-            String imageUrl = (String) uploadResult.get("secure_url");
+                byte[] fileBytes = part.getInputStream().readAllBytes();
 
-            System.out.println("Uploaded Image URL: " + imageUrl);
+                Map uploadResult = cloudinary.uploader().upload(
+                        fileBytes,
+                        ObjectUtils.emptyMap()
+                );
 
-            return imageUrl;
+                return (String) uploadResult.get("secure_url");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return null;
-    }
+        return null;    }
 }
