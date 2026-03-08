@@ -14,6 +14,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import com.model.Product;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import config.CloudinaryConfig;
+import java.util.Map;
+
 @WebServlet("/AddProductServlet")
 @MultipartConfig(maxFileSize = 1024 * 1024 * 5)
 public class AddProductServlet extends HttpServlet {
@@ -79,21 +84,21 @@ public class AddProductServlet extends HttpServlet {
         
         // ---------- IMAGE UPLOAD PATH (EXTERNAL STORAGE) ----------
         // Initialize and get external storage path
-        if (!ImageConfig.initializeImageDirectory()) {
-            resp.sendRedirect("admin/add-product.jsp?msg=storage_error");
-            return;
-        }
-        
-        String uploadPath = ImageConfig.getImageStoragePath();
-        
-        System.out.println("✅ Images will be saved to: " + uploadPath);
-        System.out.println("✅ This is OUTSIDE deployment folder - images will persist!");
+//        if (!ImageConfig.initializeImageDirectory()) {
+//            resp.sendRedirect("admin/add-product.jsp?msg=storage_error");
+//            return;
+//        }
+//        
+//        String uploadPath = ImageConfig.getImageStoragePath();
+//        
+//        System.out.println("✅ Images will be saved to: " + uploadPath);
+//        System.out.println("✅ This is OUTSIDE deployment folder - images will persist!");
 
 
         // ---------- SAVE IMAGES ----------
-        String image1 = saveImage(req.getPart("image1"), uploadPath);
-        String image2 = saveImage(req.getPart("image2"), uploadPath);
-        String image3 = saveImage(req.getPart("image3"), uploadPath);
+        String image1 = saveImage(req.getPart("image1"));
+        String image2 = saveImage(req.getPart("image2"));
+        String image3 = saveImage(req.getPart("image3"));
         
         System.out.println(image1+" -----  "+image2+" ----- "+image3);
 
@@ -130,19 +135,24 @@ public class AddProductServlet extends HttpServlet {
     }
 
     // ---------- IMAGE SAVE HELPER ----------
-    private String saveImage(Part filePart, String uploadPath)
-            throws IOException {
+    private String saveImage(Part filePart) throws IOException {
 
         if (filePart != null && filePart.getSize() > 0) {
-            String fileName =
-                    System.currentTimeMillis() + "_"
-                  + filePart.getSubmittedFileName();
 
-            System.out.println("file name : "+fileName);
-            
-            filePart.write(uploadPath + File.separator + fileName);
-            return fileName;
+            Cloudinary cloudinary = CloudinaryConfig.getCloudinary();
+
+            Map uploadResult = cloudinary.uploader().upload(
+                    filePart.getInputStream(),
+                    ObjectUtils.emptyMap()
+            );
+
+            String imageUrl = (String) uploadResult.get("secure_url");
+
+            System.out.println("Uploaded Image URL: " + imageUrl);
+
+            return imageUrl;
         }
+
         return null;
     }
 }

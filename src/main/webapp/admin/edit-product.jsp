@@ -90,19 +90,19 @@
             <div class="row mb-4 text-center">
                 <div class="col-md-4">
                     <label class="fw-bold">Main Image</label><br>
-                    <img src="../product-images/<%= p.getImage1() %>" width="80" class="mb-2"><br>
+                    <img src="<%= p.getImage1() %>" width="80" class="mb-2"><br>
                     <input type="file" name="image1" class="form-control">
                 </div>
 
                 <div class="col-md-4">
                     <label class="fw-bold">Second Image</label><br>
-                    <img src="../product-images/<%= p.getImage2() %>" width="80" class="mb-2"><br>
+                    <img src="<%= p.getImage2() %>" width="80" class="mb-2"><br>
                     <input type="file" name="image2" class="form-control">
                 </div>
 
                 <div class="col-md-4">
                     <label class="fw-bold">Third Image</label><br>
-                    <img src="../product-images/<%= p.getImage3() %>" width="80" class="mb-2"><br>
+                    <img src="<%= p.getImage3() %>" width="80" class="mb-2"><br>
                     <input type="file" name="image3" class="form-control">
                 </div>
             </div>

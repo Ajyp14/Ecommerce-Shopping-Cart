@@ -45,7 +45,7 @@
         %>
         <tr>
             <td style="width:80px;">
-                <img src="<%=request.getContextPath()%>/product-images/<%=p.getImage1()%>" width="60" alt="">
+                <img src="<%=p.getImage1()%>" width="60" alt="">
             </td>
             <td><%= p.getName() %></td>
             <td>₹<%= p.getPrice() %></td>

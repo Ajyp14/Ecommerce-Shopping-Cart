@@ -74,7 +74,7 @@
             %>
                 <tr>
                     <td>
-                        <img src="../product-images/<%= p.getImage1() %>"
+                        <img src="<%= p.getImage1() %>"
                              width="60" height="60" class="rounded">
                     </td>
                     <td><%= p.getName() %></td>
@@ -115,7 +115,7 @@
         <div class="card mb-3 shadow-sm">
             <div class="row g-0 align-items-center">
                 <div class="col-4 text-center">
-                    <img src="../product-images/<%= p.getImage1() %>"
+                    <img src="<%= p.getImage1() %>"
                          class="img-fluid rounded">
                 </div>
                 <div class="col-8">

@@ -77,7 +77,7 @@
    			
    			<!-- MAIN IMAGE -->
             <img id="mainImg"
-                 src="<%=request.getContextPath()%>/product-images/<%=p.getImage1()%>"
+                 src="<%=p.getImage1()%>"
                  class="img-fluid rounded shadow-sm mb-2"
                  style="height:400px; width:100%; object-fit:contain;">
    			
@@ -85,19 +85,19 @@
             <div class="d-flex justify-content-center gap-2 mt-2">
 
                 <% if (p.getImage1() != null) { %>
-                <img src="<%=request.getContextPath()%>/product-images/<%=p.getImage1()%>"
+                <img src="<%=p.getImage1()%>"
                      class="thumb active"
                      onclick="changeImage(this)">
                 <% } %>
 
                 <% if (p.getImage2() != null && !p.getImage2().isEmpty()) { %>
-                <img src="<%=request.getContextPath()%>/product-images/<%=p.getImage2()%>"
+                <img src="<%=p.getImage2()%>"
                      class="thumb"
                      onclick="changeImage(this)">
                 <% } %>
 
                 <% if (p.getImage3() != null && !p.getImage3().isEmpty()) { %>
-                <img src="<%=request.getContextPath()%>/product-images/<%=p.getImage3()%>"
+                <img src="<%=p.getImage3()%>"
                      class="thumb"
                      onclick="changeImage(this)">
                 <% } %>

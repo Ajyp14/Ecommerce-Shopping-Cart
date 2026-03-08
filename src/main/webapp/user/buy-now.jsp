@@ -57,7 +57,7 @@
 
                     <!-- PRODUCT INFO -->
                     <div class="col-md-4 text-center">
-                        <img src="<%=request.getContextPath()%>/product-images/<%=p.getImage1()%>"
+                        <img src="<%=p.getImage1()%>"
                              class="product-img mb-3">
                         <h6 class="fw-bold"><%=p.getName()%></h6>
                         <p class="text-muted mb-1">Brand: <%=p.getBrand()%></p>

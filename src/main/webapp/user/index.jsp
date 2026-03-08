@@ -65,7 +65,7 @@ System.out.println("Connection object: " + con);
 
                     <!-- Product Image -->
                     <a href="product-detail.jsp?id=<%=p.getId()%>">
-                        <img src="${pageContext.request.contextPath}/product-images/<%=p.getImage1()%>"
+                        <img src="<%=p.getImage1()%>"
                              class="card-img-top p-2"
                              style="height:200px; object-fit:contain;">
                     </a>
