@@ -1,15 +1,19 @@
 package com.controller;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 
 import com.dao.ProductDAO;
-import com.util.ImageConfig;
+import com.model.Product;
+import config.CloudinaryConfig;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-import com.model.Product;
 
 @WebServlet("/UpdateProductServlet")
 @MultipartConfig
@@ -19,7 +23,6 @@ public class UpdateProductServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        // ---------- GET PRODUCT ID ----------
         int id = Integer.parseInt(req.getParameter("id"));
 
         ProductDAO dao = new ProductDAO();
@@ -30,52 +33,44 @@ public class UpdateProductServlet extends HttpServlet {
             return;
         }
 
-        // ---------- FORM DATA ----------
+        // -------- FORM DATA --------
         String name = req.getParameter("name");
         String brand = req.getParameter("brand");
         String category = req.getParameter("category");
         String subcategory = req.getParameter("subcategory");
+
         double price = Double.parseDouble(req.getParameter("price"));
         double discountPrice = Double.parseDouble(req.getParameter("discount_price"));
         int quantity = Integer.parseInt(req.getParameter("quantity"));
+
         String description = req.getParameter("description");
         String specifications = req.getParameter("specifications");
 
-        // ---------- IMAGE UPLOAD PATH (EXTERNAL STORAGE) ----------
-        if (!ImageConfig.initializeImageDirectory()) {
-            resp.sendRedirect("admin/manage-products.jsp?msg=storage_error");
-            return;
-        }
-        
-        String uploadPath = ImageConfig.getImageStoragePath();
+        // -------- IMAGE HANDLING --------
+        String image1 = uploadImage(req.getPart("image1"), oldProduct.getImage1());
+        String image2 = uploadImage(req.getPart("image2"), oldProduct.getImage2());
+        String image3 = uploadImage(req.getPart("image3"), oldProduct.getImage3());
 
-        // ---------- HANDLE IMAGES ----------
-        String image1 = updateImage(req.getPart("image1"),
-                oldProduct.getImage1(), uploadPath);
-
-        String image2 = updateImage(req.getPart("image2"),
-                oldProduct.getImage2(), uploadPath);
-
-        String image3 = updateImage(req.getPart("image3"),
-                oldProduct.getImage3(), uploadPath);
-
-        // ---------- UPDATED PRODUCT ----------
+        // -------- PRODUCT OBJECT --------
         Product product = new Product();
+
         product.setId(id);
         product.setName(name);
         product.setBrand(brand);
         product.setCategory(category);
         product.setSubcategory(subcategory);
+
         product.setPrice(price);
         product.setDiscountPrice(discountPrice);
         product.setQuantity(quantity);
+
         product.setDescription(description);
         product.setSpecifications(specifications);
+
         product.setImage1(image1);
         product.setImage2(image2);
         product.setImage3(image3);
 
-        // ---------- UPDATE DB ----------
         boolean success = dao.updateProduct(product);
 
         if (success) {
@@ -85,29 +80,27 @@ public class UpdateProductServlet extends HttpServlet {
         }
     }
 
-    // ---------- IMAGE UPDATE HELPER ----------
-    private String updateImage(Part newImagePart,
-                               String oldImageName,
-                               String uploadPath) throws IOException {
+    // -------- CLOUDINARY IMAGE UPLOAD --------
+    private String uploadImage(Part part, String oldImage) {
 
-        if (newImagePart != null && newImagePart.getSize() > 0) {
+        try {
 
-            // delete old image
-            if (oldImageName != null) {
-                File oldFile = new File(uploadPath + File.separator + oldImageName);
-                if (oldFile.exists()) oldFile.delete();
+            if (part != null && part.getSize() > 0) {
+
+                Cloudinary cloudinary = CloudinaryConfig.getCloudinary();
+
+                Map uploadResult = cloudinary.uploader().upload(
+                        part.getInputStream(),
+                        ObjectUtils.emptyMap()
+                );
+
+                return (String) uploadResult.get("secure_url");
             }
 
-            // save new image
-            String newFileName =
-                    System.currentTimeMillis() + "_"
-                  + newImagePart.getSubmittedFileName();
-
-            newImagePart.write(uploadPath + File.separator + newFileName);
-            return newFileName;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        // no new image uploaded → keep old image
-        return oldImageName;
+        return oldImage;
     }
 }
