@@ -3,7 +3,9 @@ package com.controller;
 
 import java.io.IOException;
 import com.dao.OrderDAO;
+import com.dao.ProductDAO;
 import com.dao.UserDAO;
+import com.model.Product;
 import com.model.User;
 
 import jakarta.servlet.ServletException;
@@ -34,7 +36,9 @@ public class PlaceOrderServlet extends HttpServlet {
 //        String address = req.getParameter("address");
         String payment = req.getParameter("payment");
         String totalStr = req.getParameter("total");
-
+        
+        int product_id= Integer.parseInt(req.getParameter("productId"));
+        int quntity= Integer.parseInt(req.getParameter("qty"));
         
         double total = Double.parseDouble(totalStr);
 
@@ -44,12 +48,17 @@ public class PlaceOrderServlet extends HttpServlet {
         UserDAO udao= new UserDAO();
         User user=udao.getUserById(userId);
         
+        ProductDAO pdao = new ProductDAO();
+        Product product = pdao.getProductById(product_id);
+        
         OrderDAO dao = new OrderDAO();
 
         boolean ok = dao.placeOrder(
                 userId, user.getName(), user.getPhone(), user.getAddress(),
-                payment, total, upiId, cardNumber
+                payment, total, upiId, cardNumber, product_id,quntity
         );
+        
+        
 
         if (ok) {
             req.setAttribute("name", user.getName());

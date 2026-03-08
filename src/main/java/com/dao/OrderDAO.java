@@ -9,72 +9,35 @@ import com.model.OrderItem;
 import com.util.DBConnection;
 
 public class OrderDAO {
-
-/*
-	public List<Order> getAllOrders() {
-		List<Order> list = new ArrayList<>();
-		String sql = "SELECT c.id AS cart_id, c.quantity, \r\n"
-				+ "                   p.id AS product_id, p.name, p.price, p.image1 \r\n"
-				+ "            FROM cart c \r\n" + " JOIN products p ON c.product_id = p.id\r\n"
-				+ "            WHERE c.user_id = ?";
-
-		try (Connection con = DBConnection.getConnection();
-				PreparedStatement ps = con.prepareStatement(sql);
-				ResultSet rs = ps.executeQuery()) {
-
-			while (rs.next()) {
-				Order ord = new Order();
-				ord.setId(rs.getInt("id"));
-				ord.setUserName(rs.getString("user_name"));
-				ord.setTotalAmount(rs.getDouble("total_amount"));
-				ord.setStatus(rs.getString("status"));
-				ord.setOrderDate(rs.getTimestamp("order_date"));
-				ord.setItemCount(rs.getInt("item_count"));
-				list.add(ord);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return list;
-	}
-*/
 	
-	public List<Order> getAllOrders() {
+	 public List<Order> getAllOrders() {
+	        List<Order> list = new ArrayList<>();
+	        String sql = """
+	            SELECT o.id, u.name AS user_name, o.total_amount, o.status, o.order_date,
+	            (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) AS item_count
+	            FROM orders o JOIN users u ON o.user_id = u.id
+	            ORDER BY o.id DESC
+	        """;
 
-	    List<Order> list = new ArrayList<>();
+	        try(Connection con = DBConnection.getConnection();
+	            PreparedStatement ps = con.prepareStatement(sql);
+	            ResultSet rs = ps.executeQuery()) {
 
-	    String sql = "SELECT * FROM orders ORDER BY order_date DESC";
+	            while(rs.next()){
+	                Order ord = new Order();
+	                ord.setId(rs.getInt("id"));
+	                ord.setUserName(rs.getString("user_name"));
+	                ord.setTotalAmount(rs.getDouble("total_amount"));
+	                ord.setStatus(rs.getString("status"));
+	                ord.setOrderDate(rs.getTimestamp("order_date"));
+	                ord.setItemCount(rs.getInt("item_count"));
+	                list.add(ord);
+	            }
 
-	    try (Connection con = DBConnection.getConnection();
-	         PreparedStatement ps = con.prepareStatement(sql);
-	         ResultSet rs = ps.executeQuery()) {
+	        } catch(Exception e) { e.printStackTrace(); }
 
-	        while (rs.next()) {
-
-	            Order ord = new Order();
-
-	            ord.setId(rs.getInt("id"));
-	            ord.setUserId(rs.getInt("user_id"));
-	            ord.setTotalAmount(rs.getDouble("total_amount"));
-	            ord.setStatus(rs.getString("status"));
-	            ord.setOrderDate(rs.getTimestamp("order_date"));
-	            ord.setFullname(rs.getString("fullname"));
-	            ord.setPhone(rs.getString("phone"));
-	            ord.setAddress(rs.getString("address"));
-	            ord.setPaymentMethod(rs.getString("payment_method"));
-
-	            list.add(ord);
-	        }
-
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-	    return list;
-	}
-	
+	        return list;
+	    }	
 	
 	public boolean updateStatus(int id, String status) {
 		String sql = "UPDATE orders SET status=? WHERE id=?";
@@ -231,13 +194,15 @@ public class OrderDAO {
 	}
 
 	public boolean placeOrder(int userId, String fullname, String phone, String address, String paymentMethod,
-			double totalAmount, String upiId, String cardNumber) {
+			double totalAmount, String upiId, String cardNumber,int product_id,int quntity) {
 
 		String sql = "INSERT INTO orders (user_id, fullname, phone, address, payment_method, "
 				+ "total_amount, upi_id, card_number, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-		try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+		try (Connection con = DBConnection.getConnection()) {
 
+		 PreparedStatement pst = con.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+			
 			pst.setInt(1, userId);
 			pst.setString(2, fullname);
 			pst.setString(3, phone);
@@ -258,9 +223,27 @@ public class OrderDAO {
 				pst.setString(8, cardNumber);
 
 			pst.setString(9, "Pending");
+			
+			
 
-			return pst.executeUpdate() > 0;
+			boolean result = pst.executeUpdate() > 0;
+			
+			if(result) {
+				ResultSet rs = pst.getGeneratedKeys();
+				rs.next();
+				int orderId = rs.getInt(1);
+				
+				String itemSql = "INSERT INTO order_items(order_id, product_id, quantity) VALUES(?,?,?)";
+				PreparedStatement pst2 = con.prepareStatement(itemSql);
+				pst2.setInt(1, orderId);
+				pst2.setInt(2, product_id);
+				pst2.setInt(3, quntity);
+				
+				pst2.executeUpdate();
+			
+			}
 
+			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
