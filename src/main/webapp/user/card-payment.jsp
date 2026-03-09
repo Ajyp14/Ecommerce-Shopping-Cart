@@ -8,6 +8,11 @@
     String address = request.getParameter("address");
     String total = request.getParameter("total");
     String msg = request.getParameter("msg");
+    
+    String productId = request.getParameter("productId");
+    String qty = request.getParameter("qty");
+    String payment = request.getParameter("payment");
+
 
     if (total == null) total = "0";
     
@@ -102,6 +107,11 @@
         <input type="hidden" name="phone" value="<%= phone %>">
         <input type="hidden" name="address" value="<%= address %>">
         <input type="hidden" name="total" value="<%= total %>">
+        
+        <input type="hidden" name="productId" value="<%= productId %>">
+	    <input type="hidden" name="qty" value="<%= qty %>">
+        <input type="hidden" name="payment" value="<%= payment %>">
+        
 
         <div class="input-group">
             <label>Card Number</label>

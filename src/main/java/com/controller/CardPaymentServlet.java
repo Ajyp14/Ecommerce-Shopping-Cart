@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.URLEncoder;
 
 import com.dao.OrderDAO;
+import com.dao.UserDAO;
+import com.model.User;
 import com.util.DBConnection;
 
 @WebServlet("/CardPaymentServlet")
@@ -88,12 +90,24 @@ public class CardPaymentServlet extends HttpServlet {
 
         // 5️ Deduct Balance
         db.updateCardBalance(card, balance - (int) total);
+        
+        String upiId = req.getParameter("upiId");
+        
+        int productId = Integer.parseInt(req.getParameter("productId"));
+        int quantity = Integer.parseInt(req.getParameter("qty"));
+        String payment = req.getParameter("payment");
+        
+        UserDAO udao=new UserDAO();
+        
+        User user =udao.getUserById(userId);
+        
 
         // 6️ Place Order
         OrderDAO orderDao = new OrderDAO();
+       
         boolean ok = orderDao.placeOrder(
-                userId, fullname, phone, address,
-                "CARD", total, null, card
+                userId, user.getName(), user.getPhone(), user.getAddress(),
+                payment, total, upiId, card, productId,quantity
         );
 
         if (!ok) {

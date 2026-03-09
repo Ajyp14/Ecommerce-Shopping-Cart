@@ -48,8 +48,8 @@ public class PlaceOrderServlet extends HttpServlet {
         UserDAO udao= new UserDAO();
         User user=udao.getUserById(userId);
         
-        ProductDAO pdao = new ProductDAO();
-        Product product = pdao.getProductById(product_id);
+//        ProductDAO pdao = new ProductDAO();
+//        Product product = pdao.getProductById(product_id);
         
         OrderDAO dao = new OrderDAO();
 

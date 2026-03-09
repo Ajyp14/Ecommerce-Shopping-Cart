@@ -43,7 +43,11 @@
         response.sendRedirect("card-payment.jsp?fullname=" + user.getName() +
                 "&phone=" + user.getPhone() +
                 "&address=" + user.getAddress() +
-                "&total=" + total);
+                "&total=" + total+
+                "&productId="+productId+
+                "&qty="+qty+
+                "&payment="+payment
+        		);
         return;
     }
 %>
